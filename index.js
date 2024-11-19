@@ -6,7 +6,6 @@ import { upload } from './config/multerConfig.js'
 import { archiveExpiredTasks } from './controllers/taskController.js'
 import {
 	reminderRoutes,
-	settingsRoutes,
 	statisticRoutes,
 	taskRoutes,
 	userRoutes,
@@ -37,7 +36,6 @@ cron.schedule('*/1 * * * *', async function () {
 app.use('/uploads', express.static('uploads'))
 app.use('/api/users', userRoutes)
 app.use('/api/tasks', taskRoutes)
-app.use('/api/settings', settingsRoutes)
 app.use('/api/reminders', reminderRoutes)
 app.use('/api/statistic', statisticRoutes)
 
