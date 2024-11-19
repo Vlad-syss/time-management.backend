@@ -6,6 +6,7 @@ import { upload } from './config/multerConfig.js'
 import { archiveExpiredTasks } from './controllers/taskController.js'
 import {
 	reminderRoutes,
+	settingsRoutes,
 	statisticRoutes,
 	taskRoutes,
 	userRoutes,
@@ -38,6 +39,7 @@ app.use('/api/users', userRoutes)
 app.use('/api/tasks', taskRoutes)
 app.use('/api/reminders', reminderRoutes)
 app.use('/api/statistic', statisticRoutes)
+app.use('/api/settings', settingsRoutes)
 
 app.post(
 	'api/upload/avatar',
