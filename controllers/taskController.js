@@ -4,6 +4,7 @@ import {
 	defaultCategory,
 	defaultStatus,
 } from '../models/taskModel.js'
+import { createReminder } from './reminderController.js'
 import { updateUserStatistics } from './statisticController.js'
 
 export const createTask = async (req, res) => {
@@ -29,6 +30,24 @@ export const createTask = async (req, res) => {
 		})
 
 		const savedTask = await task.save()
+
+		// reminder ))))
+		if (new Date(startTime) > new Date()) {
+			const reminderMessage = `"${title.toUpperCase()}" will be starting soon, don't forget!`
+			const reminderReq = {
+				body: {
+					time: startTime,
+					message: reminderMessage,
+				},
+				userId: req.userId,
+			}
+			const reminderRes = {
+				json: data => console.log('Reminder created:', data),
+				status: statusCode => ({ json: data => console.log('Error:', data) }),
+			}
+
+			await createReminder(reminderReq, reminderRes)
+		}
 
 		await updateUserStatistics(req.userId)
 
@@ -73,7 +92,9 @@ export const updateTask = async (req, res) => {
 
 export const getAllTasks = async (req, res) => {
 	try {
-		const tasks = await taskModel.find().populate('category status')
+		const userId = req.userId
+		const tasks = await taskModel.find({ userId }).populate('category status')
+
 		res.json(tasks)
 	} catch (error) {
 		console.log(error)
@@ -84,7 +105,11 @@ export const getAllTasks = async (req, res) => {
 export const getTaskById = async (req, res) => {
 	try {
 		const taskId = req.params.id
-		const task = await taskModel.findById(taskId).populate('category status')
+		const userId = req.userId
+
+		const task = await taskModel
+			.findOne({ _id: taskId, userId })
+			.populate('category status')
 
 		if (!task) {
 			return res.status(404).json({ message: 'Task not found!' })
@@ -270,6 +295,7 @@ export const unarchiveExpiredTasks = async taskId => {
 export const searchTasks = async (req, res) => {
 	try {
 		const { query } = req.query
+		const userId = req.userId
 
 		if (!query) {
 			return res.status(400).json({ message: 'Search query is required!' })
@@ -283,6 +309,7 @@ export const searchTasks = async (req, res) => {
 					{ description: { $regex: searchRegex } },
 					{ 'category.name': { $regex: searchRegex } },
 				],
+				userId,
 			})
 			.populate('category status')
 
@@ -297,8 +324,9 @@ export const searchTasks = async (req, res) => {
 
 export const getArchivedTasks = async (req, res) => {
 	try {
+		const userId = req.userId
 		const archivedTasks = await taskModel
-			.find({ 'status.archived': true })
+			.find({ 'status.archived': true, userId })
 			.populate('category')
 			.populate('status')
 

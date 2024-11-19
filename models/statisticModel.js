@@ -29,30 +29,29 @@ const StatisticSchema = new Schema(
 		},
 		categories: [
 			{
-				type: String,
-				required: true,
+				name: { type: String, required: true },
+				taskCount: { type: Number, required: true },
+				averageTime: { type: Number, required: true },
 			},
 		],
-		// categories: [
-		// 	{
-		// 		category: {
-		// 			type: mongoose.Schema.Types.ObjectId,
-		// 			ref: 'Category',
-		// 			required: true,
-		// 		},
-		// 		completedTasks: {
-		// 			type: Number,
-		// 			required: true,
-		// 		},
-		// 		timeSpent: {
-		// 			type: Number,
-		// 			required: true,
-		// 		},
-		// 	},
-		// ],
 		dailyPerformance: {
 			type: Map,
 			of: Number,
+			required: true,
+		},
+		monthlyPerformance: {
+			type: Map,
+			of: Number,
+		},
+		bestDay: {
+			type: String,
+		},
+		rescheduledTasks: {
+			type: Number,
+			required: true,
+		},
+		longestTaskTime: {
+			type: Number,
 			required: true,
 		},
 	},
