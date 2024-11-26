@@ -1,4 +1,4 @@
-import { reminderModel, settingsModel } from '../models/index.js'
+import { settingsModel } from '../models/index.js'
 
 export const getSettings = async (req, res) => {
 	try {
@@ -18,10 +18,6 @@ export const getSettings = async (req, res) => {
 export const updateSettings = async (req, res) => {
 	try {
 		const updates = req.body
-
-		if (updates.notifications && updates.notifications.reminders === false) {
-			await reminderModel.deleteMany({ user: req.userId })
-		}
 
 		const settings = await settingsModel.findOneAndUpdate(
 			{ user: req.userId },

@@ -146,18 +146,6 @@ export const getUserById = async (req, res) => {
 	}
 }
 
-export const getAll = async (req, res) => {
-	try {
-		const users = await userModel.find().select('-passwordHash')
-		res.json(users)
-	} catch (error) {
-		console.log('error')
-		res.status(500).json({
-			message: 'Unable to retrieve users!',
-		})
-	}
-}
-
 export const updateAvatar = async (req, res) => {
 	try {
 		const user = await userModel.findById(req.userId)

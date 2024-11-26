@@ -1,11 +1,7 @@
 import express from 'express'
 import { upload } from '../config/multerConfig.js'
 import { userController } from '../controllers/index.js'
-import {
-	checkAdmin,
-	checkAuth,
-	handleValidationErrors,
-} from '../utils/index.js'
+import { checkAuth, handleValidationErrors } from '../utils/index.js'
 import {
 	loginValidation,
 	registerValidation,
@@ -33,7 +29,6 @@ router.put(
 	userController.update
 )
 router.get('/personal-cabinet', checkAuth, userController.getUserById)
-router.get('/all-users', checkAdmin, userController.getAll)
 router.post(
 	'/upload/avatar',
 	checkAuth,

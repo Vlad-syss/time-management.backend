@@ -1,3 +1,4 @@
+export { router as adminRoutes } from './adminRoutes.js'
 export { router as reminderRoutes } from './reminderRoutes.js'
 export { router as settingsRoutes } from './settingsRoutes.js'
 export { router as statisticRoutes } from './statisticRoutes.js'

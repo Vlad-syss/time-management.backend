@@ -13,16 +13,6 @@ const SettingsSchema = new Schema(
 			enum: ['light', 'dark'],
 			default: 'light',
 		},
-		notifications: {
-			email: {
-				type: Boolean,
-				default: true,
-			},
-			reminders: {
-				type: Boolean,
-				default: true,
-			},
-		},
 	},
 	{
 		timestamps: true,

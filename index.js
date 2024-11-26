@@ -5,6 +5,7 @@ import cron from 'node-cron'
 import { upload } from './config/multerConfig.js'
 import { archiveExpiredTasks } from './controllers/taskController.js'
 import {
+	adminRoutes,
 	reminderRoutes,
 	settingsRoutes,
 	statisticRoutes,
@@ -19,8 +20,8 @@ const app = express()
 app.use(express.json())
 app.use(
 	cors({
-		origin: process.env.BASE_URL, // Allow requests only from this origin
-		credentials: true, // Enable credentials if needed (e.g., cookies or auth headers)
+		origin: process.env.BASE_URL,
+		credentials: true,
 	})
 )
 app.use(connectDB())
@@ -28,7 +29,6 @@ app.use(connectDB())
 cron.schedule('*/1 * * * *', async function () {
 	try {
 		await archiveExpiredTasks()
-		// await unarchiveAllExpiredTasks()
 	} catch (error) {
 		console.log(error)
 	}
@@ -40,6 +40,7 @@ app.use('/api/tasks', taskRoutes)
 app.use('/api/reminders', reminderRoutes)
 app.use('/api/statistic', statisticRoutes)
 app.use('/api/settings', settingsRoutes)
+app.use('/api/admin', adminRoutes)
 
 app.post(
 	'api/upload/avatar',

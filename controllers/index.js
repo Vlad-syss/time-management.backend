@@ -1,3 +1,4 @@
+export * as adminConroller from './adminController.js'
 export * as reminderController from './reminderController.js'
 export * as settingsController from './settingsController.js'
 export * as statisticController from './statisticController.js'
